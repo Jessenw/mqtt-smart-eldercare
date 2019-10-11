@@ -16,6 +16,8 @@ import { NavController } from '@ionic/angular';
 
 import { Paho } from '../../assets/js/paho-mqtt';
 
+import { MQTTService } from 'ionic-mqtt';
+
 @Component({
   selector: 'page-home',
   templateUrl: 'home.page.html'
@@ -29,12 +31,42 @@ export class HomePage {
   private topic = 'swen325/a3';
   private clientId = '342323cwwerwe'; // this string must be unique to every client
 
-  constructor(public navCtrl: NavController) {
+  private _mqttClient: any;
+
+  private MQTT_CONFIG: {
+    host: string,
+    port: number,
+    clientId: string,
+  } = {
+    host: 'barretts.ecs.vuw.ac.nz',
+    port: 8883,
+    clientId: "/mqtt",
+  };
+
+  private TOPIC: string[] = ['swen325/a3'];
+
+  constructor(public navCtrl: NavController, private mqttService: MQTTService) {
+  }
+
+  ngOnInit() {
+    this._mqttClient = this.mqttService.loadingMqtt(this._onConnectionLost, this._onMessageArrived, this.TOPIC, this.MQTT_CONFIG)
+  }
+
+  private _onConnectionLost(responseObject) {
+    // connection listener
+    // ...do actions when connection lost
+    console.log('_onConnectionLost', responseObject);
+  }
+
+  private _onMessageArrived(message) {
+    // message listener
+    // ...do actions with arriving message
+    console.log('message', message['payloadString']);
   }
 
   public connect() {
     this.mqttStatus = 'Connecting...';
-    this.mqttClient = new Paho.MQTT.Client('barretts.ecs.vuw.ac.nz', 8883, '/mqtt', this.clientId);
+    this.mqttClient = new Paho.MQTT.Client('barretts.ecs.vuw.ac.nz', 8883, '342323cwwerwe', this.clientId);
 
     // set callback handlers
     this.mqttClient.onConnectionLost = this.onConnectionLost;

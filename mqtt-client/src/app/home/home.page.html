@@ -1,52 +1,53 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>
-      MQTT Tutorial
+      Smart Eldercare
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
-  <ion-card>
+    <ion-card>
     <ion-card-content>Status: <b>{{this.mqttStatus}}</b></ion-card-content>
-  </ion-card>
+    </ion-card>
 
-  <ion-row justify-content-center align-items-center>
-    <ion-button (click)="connect()">Connect</ion-button>
-    <ion-button (click)="disconnect()">Disconnect</ion-button>
-  </ion-row>
+    <ion-card>
+        <ion-card-header>
+            <ion-card-title>
+                Last Location
+            </ion-card-title>
+        </ion-card-header>
+        <ion-item>
+            {{lastLocation}}
+        </ion-item>
+        <ion-item>
+            {{timeSinceUpdate}} minutes ago
+        </ion-item>
+    </ion-card>
 
-  <ion-card>
-    <ion-card-header>
-      Bar Chart
-    </ion-card-header>
-    <ion-card-content>
-      <canvas #barCanvas></canvas>
-    </ion-card-content>
-  </ion-card>
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>
-        Message Received:
-      </ion-card-title>
-    </ion-card-header>
-    <ion-card-content>{{this.message}}</ion-card-content>
-  </ion-card>
+    <ion-card>
+        <ion-card-header>
+            Room Occupancy
+        </ion-card-header>
+        <ion-card-content>
+            <canvas #barCanvas></canvas>
+        </ion-card-content>
+    </ion-card>
 
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>
-        Message to Send:
-      </ion-card-title>
-    </ion-card-header>
-    <ion-item>
-      <ion-textarea [(ngModel)]='messageToSend' placeholder="Type message here"></ion-textarea>
-    </ion-item>
-  </ion-card>
+<!--    <ion-card>-->
+<!--        <ion-card-header>-->
+<!--            <ion-card-title>-->
+<!--                Message to Send:-->
+<!--            </ion-card-title>-->
+<!--        </ion-card-header>-->
+<!--        <ion-item>-->
+<!--            <ion-textarea [(ngModel)]='messageToSend' placeholder="Type message here"></ion-textarea>-->
+<!--        </ion-item>-->
+<!--    </ion-card>-->
 
-  <ion-row justify-content-center align-items-center>
-    <ion-button full (click)="sendMessage()">Send Message</ion-button>
-  </ion-row>
+<!--    <ion-row justify-content-center align-items-center>-->
+<!--        <ion-button full (click)="sendMessage()">Send Message</ion-button>-->
+<!--    </ion-row>-->
 </ion-content>
 
 

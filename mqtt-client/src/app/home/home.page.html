@@ -11,6 +11,15 @@
     <ion-card-content>Status: <b>{{this.mqttStatus}}</b></ion-card-content>
   </ion-card>
 
+  <ion-card>
+    <ion-card-header>
+      Bar Chart
+    </ion-card-header>
+    <ion-card-content>
+      <canvas #barCanvas></canvas>
+    </ion-card-content>
+  </ion-card>
+
   <ion-row justify-content-center align-items-center>
     <ion-button (click)="connect()">Connect</ion-button>
     <ion-button (click)="disconnect()">Disconnect</ion-button>

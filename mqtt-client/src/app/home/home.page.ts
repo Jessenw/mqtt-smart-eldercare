@@ -33,6 +33,7 @@ export class HomePage {
   @ViewChild("barCanvas", {static: false}) barCanvas: ElementRef;
   private barChart: Chart;
 
+  private graphData = [0, 0, 0, 0, 0];
 
   constructor(public navCtrl: NavController, private mqttService: MQTTService) {}
 
@@ -40,18 +41,17 @@ export class HomePage {
     this.barChart = new Chart(this.barCanvas.nativeElement, {
       type: "bar",
       data: {
-        labels: ["Living", "Kitchen", "Dining", "Toilet", "Bedroom", "Orange"],
+        labels: ["Living", "Kitchen", "Dining", "Toilet", "Bedroom"],
         datasets: [
           {
             label: "# of Votes",
-            data: [12, 19, 3, 5, 2, 3],
+            data: this.graphData,
             backgroundColor: [
               "rgba(255, 99, 132, 0.2)",
               "rgba(54, 162, 235, 0.2)",
               "rgba(255, 206, 86, 0.2)",
               "rgba(75, 192, 192, 0.2)",
               "rgba(153, 102, 255, 0.2)",
-              "rgba(255, 159, 64, 0.2)"
             ],
             borderColor: [
               "rgba(255,99,132,1)",
@@ -59,7 +59,6 @@ export class HomePage {
               "rgba(255, 206, 86, 1)",
               "rgba(75, 192, 192, 1)",
               "rgba(153, 102, 255, 1)",
-              "rgba(255, 159, 64, 1)"
             ],
             borderWidth: 1
           }
@@ -87,11 +86,31 @@ export class HomePage {
   }
 
   private _onMessageArrived = (message) => {
-      this.message = message['payloadString'];
-      console.log('Receive message', message['payloadString']);
+    let splitMessage = message['payloadString'].split(',');
+    let index = -1;
+    let room = splitMessage[1];
+    let detected = splitMessage[2];
+
+    if (detected == '1') {
+      if (room === 'living') index = 0;
+      else if (room === 'kitchen') index = 1;
+      else if (room === 'dining') index = 2;
+      else if (room === 'toilet') index = 3;
+      else if (room === 'bedroom') index = 4;
+
+      this.updateGraph(index)
+    }
+
+    this.message = message['payloadString'];
+    console.log('Receive message', message['payloadString']);
   }
 
-  public connect() {
+  public updateGraph(room) {
+    this.barChart.data.datasets[0].data[room]++;
+    this.barChart.update();
+  }
+
+  public connect = () => {
     this.mqttStatus = 'Connecting...';
     this._mqttClient = this.mqttService.loadingMqtt(this._onConnectionLost, this._onMessageArrived, this.TOPIC, this.MQTT_CONFIG)
 
@@ -103,7 +122,6 @@ export class HomePage {
   public disconnect() {
     if (this.mqttStatus === 'Connected') {
       this.mqttStatus = 'Disconnecting...';
-      //   this.mqttClient.disconnect();
       this.mqttStatus = 'Disconnected';
     }
   }

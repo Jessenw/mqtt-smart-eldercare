@@ -22,11 +22,6 @@ export class HomePage {
 
     private mqttTopic: string[] = ['swen325/a3'];
 
-    @ViewChild("barCanvas", {static: false}) barCanvas: ElementRef;
-    private barChart: Chart;
-
-    private subscription: Subscription;
-
     private MQTT_CONFIG: {
         host: string,
         port: number,
@@ -36,6 +31,11 @@ export class HomePage {
         port: 8883,
         clientId: "/mqtt",
     };
+
+    @ViewChild("barCanvas", {static: false}) barCanvas: ElementRef;
+    private barChart: Chart;
+
+    private subscription: Subscription;
 
 
     constructor(public navCtrl: NavController, private mqttService: MQTTService) {}

@@ -25,6 +25,7 @@
     "@ionic-native/status-bar": "^5.0.0",
     "@ionic/angular": "^4.7.1",
     "chart.js": "^2.8.0",
+    "chartjs-plugin-datalabels": "^0.7.0",
     "core-js": "^2.5.4",
     "ionic-angular": "^3.9.9",
     "ionic-mqtt": "^1.1.5",
